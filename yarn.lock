@@ -4895,6 +4895,12 @@ process-nextick-args@~1.0.6:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-1.0.7.tgz#150e20b756590ad3f91093f25a4f2ad8bff30ba3"
 
+process.hrtime@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/process.hrtime/-/process.hrtime-1.0.3.tgz#df402e5109658690f487a07649e8d03cfc1493ac"
+  dependencies:
+    debug "^2.2.0"
+
 process@^0.11.0:
   version "0.11.10"
   resolved "https://registry.yarnpkg.com/process/-/process-0.11.10.tgz#7332300e840161bda3e69a1d1d91a7d4bc16f182"

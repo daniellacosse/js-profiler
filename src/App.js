@@ -89,8 +89,6 @@ class App extends Component {
 
     return (
       <main>
-        {this.renderJSFragments()}
-
         <CodeTabs/>
 
         <button onClick={this.runCode.bind(this)} disabled={isRunning}>
