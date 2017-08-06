@@ -3,6 +3,9 @@ import './App.css';
 
 import CodeMirror from 'react-codemirror';
 import 'codemirror/lib/codemirror.css';
+import 'bootstrap/dist/css/bootstrap.css';
+
+import CodeTabs from './code-tabs';
 
 import loadFunctions from './insert-js-fragment';
 
@@ -47,11 +50,7 @@ class App extends Component {
       <main>
         {this.renderJSFragments()}
 
-        <CodeMirror
-          value={code}
-          onChange={this.updateCode.bind(this)}
-          options={options}
-        />
+        <CodeTabs/>
 
         <button onClick={this.runCode.bind(this)}>
           Run Code
