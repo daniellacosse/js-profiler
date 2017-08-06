@@ -6,7 +6,8 @@
     "react-scripts": "1.0.10"
   },
   "dependencies": {
-    "process.hrtime": "^1.0.3",
+    "bootstrap": "4.0.0-alpha.6",
+    "install": "^0.10.1",
     "react": "^15.6.1",
     "react-codemirror": "^1.0.0",
     "react-dom": "^15.6.1",
