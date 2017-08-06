@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import CodeMirror from 'react-codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'bootstrap/dist/css/bootstrap.css';
 

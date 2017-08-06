@@ -1,5 +1,6 @@
 import React from 'react';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
+import CodeMirror from 'react-codemirror';
 import classnames from 'classnames';
 
 export default class CodeTabs extends React.Component {
@@ -8,7 +9,8 @@ export default class CodeTabs extends React.Component {
 
     this.toggle = this.toggle.bind(this);
     this.state = {
-      activeTab: '1'
+      activeTab: '1',
+      tabs: ['1', '2']
     };
   }
 
@@ -19,9 +21,10 @@ export default class CodeTabs extends React.Component {
       });
     }
   }
+
   render() {
     return (
-      <div>
+      <div id="code-area">
         <Nav tabs>
           <NavItem>
             <NavLink
@@ -44,14 +47,14 @@ export default class CodeTabs extends React.Component {
           <TabPane tabId="1">
             <Row>
               <Col sm="12">
-                <h4>Function 1 Contents</h4>
+                <CodeMirror/>
               </Col>
             </Row>
           </TabPane>
           <TabPane tabId="2">
             <Row>
               <Col sm="12">
-                <h4>Function 2 Contents</h4>
+                <CodeMirror/>
               </Col>
             </Row>
           </TabPane>
