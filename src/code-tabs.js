@@ -1,8 +1,7 @@
 import React from 'react';
-import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
-import CodeMirror from 'react-codemirror';
-import classnames from 'classnames';
+import { TabContent, Nav } from 'reactstrap';
 import CodeTabNav from './code-tabs-nav';
+import CodeTabPane from './code-tab-pane';
 
 export default class CodeTabs extends React.Component {
   constructor(props) {
@@ -27,23 +26,17 @@ export default class CodeTabs extends React.Component {
     return (
       <div id="code-area">
         <Nav tabs>
-          <NavItem>
-            <NavLink
-              className={classnames({ active: this.state.activeTab === '2' })}
-              onClick={() => { this.toggle('2'); }}
-            >
-              Function 2
-            </NavLink>
-          </NavItem>
+          {this.state.tabs.map((tabId, i) => {
+            return <CodeTabNav 
+              key={i}
+              title={`Function ${tabId}`}
+              active={this.state.activeTab === tabId}
+              onClick={() => {this.toggle(tabId)}}>
+            </CodeTabNav>
+          })}
         </Nav>
         <TabContent activeTab={this.state.activeTab}>
-          <TabPane tabId="2">
-            <Row>
-              <Col sm="12">
-                <CodeMirror/>
-              </Col>
-            </Row>
-          </TabPane>
+          {this.state.tabs.map((tabId, i) => <CodeTabPane key={i} id={tabId}></CodeTabPane>)}
         </TabContent>
       </div>
     );
