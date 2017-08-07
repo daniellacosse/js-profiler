@@ -7,7 +7,7 @@ export default class CodeTabPane extends React.Component {
   render() {
     return (
       <TabPane tabId={this.props.id}>
-        <CodeMirror/>
+        <CodeMirror onChange={this.props.onChange}/>
       </TabPane>
     )
   }
