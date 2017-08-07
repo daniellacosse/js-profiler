@@ -10,7 +10,7 @@ export default class CodeTabs extends React.Component {
     this.toggle = this.toggle.bind(this);
     this.state = {
       activeTab: '1',
-      tabs: ['1', '2']
+      tabs: [{id: '1', code:''}, {id: '2', code:''}]
     };
   }
 
@@ -23,12 +23,12 @@ export default class CodeTabs extends React.Component {
   }
 
   addNewTab() {
-    let lastTab = parseInt(this.state.tabs[this.state.tabs.length - 1], 10);
-    let newTab = String(lastTab + 1)
-    let newTabs = this.state.tabs.concat([newTab]);
+    let lastTab = this.state.tabs[this.state.tabs.length - 1]
+    let newTabId = String(parseInt(lastTab.id, 10) + 1)
+    let newTabs = this.state.tabs.concat([{id: newTabId, code: ''}]);
     this.setState({
       tabs: newTabs,
-      activeTab: newTab
+      activeTab: newTabId
     })
   }
 
@@ -36,12 +36,12 @@ export default class CodeTabs extends React.Component {
     return (
       <div id="code-area">
         <Nav tabs>
-          {this.state.tabs.map((tabId, i) => {
+          {this.state.tabs.map(({id}, i) => {
             return <CodeTabNav 
               key={i}
-              title={`Function ${tabId}`}
-              active={this.state.activeTab === tabId}
-              onClick={() => this.toggle(tabId)}>
+              title={`Function ${id}`}
+              active={this.state.activeTab === id}
+              onClick={() => this.toggle(id)}>
             </CodeTabNav>
           })}
           <CodeTabNav 
@@ -52,7 +52,7 @@ export default class CodeTabs extends React.Component {
           </CodeTabNav>
         </Nav>
         <TabContent activeTab={this.state.activeTab}>
-          {this.state.tabs.map((tabId, i) => <CodeTabPane key={i} id={tabId}></CodeTabPane>)}
+          {this.state.tabs.map(({id}, i) => <CodeTabPane key={i} id={id}></CodeTabPane>)}
         </TabContent>
       </div>
     );
