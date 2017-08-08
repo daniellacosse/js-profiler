@@ -10,7 +10,7 @@ export default class CodeTabNav extends React.Component {
       <NavItem>
         <NavLink
           className={classnames({ active: this.props.active })}
-          onClick={() => { this.props.onClick()}}
+          onClick={this.props.onClick}
         >
           {this.props.title}
         </NavLink>
