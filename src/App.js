@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import './App.css';
 
 import CodeMirror from 'react-codemirror';
-import { Table, Collapse, Card, CardText, CardTitle, CardBlock } from 'reactstrap';
-import { BarChart, Bar, ResponsiveContainer, ReferenceLine } from 'recharts';
+import { Table, Collapse } from 'reactstrap';
 import 'codemirror/lib/codemirror.css';
 
 import loadFunctions from './insert-js-fragment';
 import profileFunc from './profile-func';
 import analyzeResults from './analyze-profile';
+import StatsCard from './StatsCard';
 
 class App extends Component {
   constructor(props) {
@@ -27,9 +27,15 @@ class App extends Component {
   }
 
   updateCode(newCode) {
-      this.setState({
-          code: newCode,
-      });
+    this.setState({
+      code: newCode
+    });
+  }
+
+  toggleTable() {
+    this.setState({
+      isTableOpen: !this.state.isTableOpen
+    });
   }
 
   runCode() {
@@ -66,67 +72,38 @@ class App extends Component {
     );
   }
 
+  renderResultCards() {
+    const {results} = this.state;
+
+    return results.map((result, i) => <StatsCard
+      results={result} name={`V${i}`} {...analyzeResults(result)} />
+    )
+  }
+
   renderResults() {
+    const {results, isTableOpen} = this.state;
+
     if (!this.state.results) {
       return <section></section>;
     }
 
-    // console.log("analyzeResults(this.state.results:", analyzeResults(this.state.results[0]));
-
     return (
       <section>
-        {this.state.results.map((result, i) => {
-          const {max, median, samples, outerFence} = analyzeResults(result);
+        {this.renderResultCards()}
 
-          const formatTime = (timeinNs) => {
-            const fixedNum = timeinNs.toFixed(3);
-
-            if (timeinNs < 1) {
-              return `${fixedNum * 1000}ns`
-            }
-
-            return `${fixedNum}ms`
-          }
-
-          return (
-            <Card key={i}>
-              <CardBlock>
-                <CardTitle>{`V${i + 1}`}</CardTitle>
-
-                <ResponsiveContainer width="100%" height={75}>
-                  <BarChart data={
-                      samples.reverse()
-                        .filter(
-                          num => num > outerFence.min && num < outerFence.max
-                        )
-                        .map(point => ({point}))
-                    }>
-
-                    <Bar dataKey='point' fill='#108ee9' isAnimationActive={false}/>
-                    <ReferenceLine y={median} stroke='#da8c18' isAnimationActive={false} />
-                  </BarChart>
-                </ResponsiveContainer>
-
-                <CardText>
-                  <b>Median Execution Time:</b> {formatTime(median)} <br />
-                  <b>Max Execution Time:</b> {formatTime(max)}
-                </CardText>
-              </CardBlock>
-            </Card>
-          )
-        })}
-        <button onClick={() => this.setState({ isTableOpen: !this.state.isTableOpen })}>
+        <button onClick={this.toggleTable.bind(this)}>
           Toggle Table
         </button>
-        <Collapse isOpen={this.state.isTableOpen}>
+
+        <Collapse isOpen={isTableOpen}>
           <Table>
             <thead>
               <tr>
-                {this.state.results.map((row, i) => <th key={i}>{i}</th>)}
+                {results.map((row, i) => <th key={i}>{i}</th>)}
               </tr>
             </thead>
             <tbody>
-              {this.state.results[0].map((cell, i) => this.renderResultRow(i))}
+              {results[0].map((cell, i) => this.renderResultRow(i))}
             </tbody>
           </Table>
         </Collapse>
