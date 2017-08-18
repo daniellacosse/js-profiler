@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import './App.css';
 
 import CodeMirror from 'react-codemirror';
-import { Table } from 'reactstrap';
+import { Table, Collapse } from 'reactstrap';
 import 'codemirror/lib/codemirror.css';
 
 import loadFunctions from './insert-js-fragment';
 import profileFunc from './profile-func';
+import analyzeResults from './analyze-profile';
+import StatsCard from './StatsCard';
 
 class App extends Component {
   constructor(props) {
@@ -14,6 +16,7 @@ class App extends Component {
 
     this.state = {
       isRunning: false,
+      isTableOpen: false,
       code: "// Paste JS function here",
       options: {
         lineNumbers: true,
@@ -24,9 +27,15 @@ class App extends Component {
   }
 
   updateCode(newCode) {
-      this.setState({
-          code: newCode,
-      });
+    this.setState({
+      code: newCode
+    });
+  }
+
+  toggleTable() {
+    this.setState({
+      isTableOpen: !this.state.isTableOpen
+    });
   }
 
   runCode() {
@@ -63,22 +72,42 @@ class App extends Component {
     );
   }
 
+  renderResultCards() {
+    const {results} = this.state;
+
+    return results.map((result, i) => <StatsCard
+      results={result} name={`V${i}`} {...analyzeResults(result)} />
+    )
+  }
+
   renderResults() {
+    const {results, isTableOpen} = this.state;
+
     if (!this.state.results) {
-      return <Table></Table>;
+      return <section></section>;
     }
 
     return (
-      <Table>
-        <thead>
-          <tr>
-            {this.state.results.map((row, i) => <th key={i}>{i}</th>)}
-          </tr>
-        </thead>
-        <tbody>
-          {this.state.results[0].map((cell, i) => this.renderResultRow(i))}
-        </tbody>
-      </Table>
+      <section>
+        {this.renderResultCards()}
+
+        <button onClick={this.toggleTable.bind(this)}>
+          Toggle Table
+        </button>
+
+        <Collapse isOpen={isTableOpen}>
+          <Table>
+            <thead>
+              <tr>
+                {results.map((row, i) => <th key={i}>{i}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {results[0].map((cell, i) => this.renderResultRow(i))}
+            </tbody>
+          </Table>
+        </Collapse>
+      </section>
     );
   }
 
