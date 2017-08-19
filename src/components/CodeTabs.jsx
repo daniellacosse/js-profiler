@@ -13,13 +13,13 @@ const CodeTabNav = ({ isActive, onClick, title }) =>
     </NavLink>
   </NavItem>
 
-const CodeTabPane = ({ id, onChange, options }) =>
+const CodeTabPane = ({ id, onChange, code, options }) =>
   <TabPane tabId={id}>
-    <CodeMirror {...{ options, onChange }} />
+    <CodeMirror {...{ options, onChange }} value={code} />
   </TabPane>
 
 export default ({
-  tabs, activeTab, addNewTab, onToggle, onChangeFactory, options
+  tabs, activeTab, addNewTab, onToggleFactory, onChangeFactory, options
 }) =>
   <section id="code-area">
     <Nav tabs>
@@ -33,8 +33,8 @@ export default ({
       <CodeTabNav title="+" onClick={addNewTab} />
     </Nav>
     <TabContent activeTab={activeTab}>
-      {tabs.map(({ id }) =>
-        <CodeTabPane key={id} id={id} onChange={onChangeFactory(id)} />
+      {tabs.map(({ id, code }) =>
+        <CodeTabPane key={id} {...{ id, code, options }}  onChange={onChangeFactory(id)} />
       )}
     </TabContent>
   </section>

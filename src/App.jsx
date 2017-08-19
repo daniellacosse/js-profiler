@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { Table, Collapse } from "reactstrap";
+import { Collapse } from "reactstrap";
 
 import { loadFunctions, profileFunc, analyzeResults } from "./lib";
 import { StatsCard, CodeTabs, RawDataTable } from "./components";
 
 export default class App extends Component {
-  state = require("./App.defaultState")
+  state = require("./App.defaultState.json")
 
   onCodeChangeFactory = (tabId) => {
     return (code) => {
@@ -52,13 +52,12 @@ export default class App extends Component {
   }
 
   runCode = () => {
-    this.setState({ isRunning: true }, async () => {
-      const funcs = this.state.tabs.map(({ code }) => code);
-;
+    this.setState({ isRunning: true }, async() => {
+      const funcs = this.state.tabs.map(({ code }) => code);;
       await loadFunctions(funcs);
 
       const results = funcs.map(
-        async (_, index) => await profileFunc(window[`_func${index}`])
+        async(_, index) => await profileFunc(window[`_func${index}`])
       );
 
       Promise
