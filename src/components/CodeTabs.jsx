@@ -26,6 +26,7 @@ export default ({
   addNewTab,
   onChangeFactory,
   onToggleFactory,
+  onTabCloseFactory,
   options,
   tabs,
 }) =>
@@ -36,7 +37,8 @@ export default ({
           title={`Function ${id}`}
           isActive={activeTab === id}
           onClick={onToggleFactory(id)}
-          isTabClosable={true}
+          isTabClosable={tabs.length > 1}
+          onCloseTab={onTabCloseFactory(id)}
         />
       )}
       <CodeTabNav title="+" onClick={addNewTab} tabIsClosable={false} />
