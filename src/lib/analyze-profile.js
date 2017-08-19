@@ -8,7 +8,7 @@ import {
   minSorted,
   maxSorted,
   zScore,
-} from 'simple-statistics';
+} from "simple-statistics";
 
 export default (results, sampleSize = 30) => {
   const resultSample = sample(results, sampleSize).sort();

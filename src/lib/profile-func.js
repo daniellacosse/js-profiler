@@ -4,7 +4,7 @@ export default async function (func, times = 30) {
   while (times--) {
     const start = performance.now();
 
-    await func();
+    await func && func();
 
     const duration = performance.now() - start;
 

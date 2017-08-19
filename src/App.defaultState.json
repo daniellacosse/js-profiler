@@ -1,0 +1,16 @@
+{
+  "isRunning": false,
+  "isTableOpen": false,
+  "options": {
+    "lineNumbers": true,
+    "mode": "javascript",
+    "theme": "night"
+  },
+  "activeTab": "1",
+  "tabs": [
+    {
+      "id": "1",
+      "code": "() => {}"
+    }
+  ]
+}

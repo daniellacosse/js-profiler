@@ -11,9 +11,9 @@ export default (codes = []) => {
 
     newProfilerScript.src = `data:text/javascript;base64,${
       btoa(
-        codes.map((code, i) => `window._func${i}=${code};`).join('')
+        codes.map((code, i) => `window._func${i}=${code};`).join("")
       )
-    }`
+    }`;
 
     document.body.append(newProfilerScript);
   });
