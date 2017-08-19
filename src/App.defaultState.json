@@ -10,7 +10,7 @@
   "tabs": [
     {
       "id": "1",
-      "code": "// Paste JS function here"
+      "code": "() => {}"
     }
   ]
 }

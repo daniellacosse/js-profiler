@@ -37,7 +37,7 @@ class TableHeader extends Component {
     return (
       <thead>
         <tr>
-          {this.context.data.map(
+          {this.context.data[0].map(
             (row, index) => <th key={index}>{index}</th>
           )}
         </tr>
@@ -68,7 +68,7 @@ class TableRow extends Component {
     const cells = this.context.data[index];
     return (
       <tr key={index}>
-        {cells.map((cell, j) => <td key={j}>{cell}ms</td>)}
+        {cells.map((cell, j) => <td key={j}>{cell.toFixed(3)}ms</td>)}
       </tr>
     );
   }

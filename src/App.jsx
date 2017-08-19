@@ -38,11 +38,10 @@ export default class App extends Component {
       parseInt(lastTab.id, 10) + 1
     );
 
-    const newTabs = [
-      ...tabs,
+    const newTabs = [ ...tabs,
       {
         id: newTabId,
-        code: ""
+        code: "() => {}"
       }
     ]
 
@@ -96,7 +95,7 @@ export default class App extends Component {
       <section>
         {this.renderResultCards()}
 
-        <button onClick={this.onToggleTable}>
+        <button onClick={this.onTableToggle}>
           Toggle Table
         </button>
 
@@ -109,10 +108,8 @@ export default class App extends Component {
 
   renderResultCards() {
     return this.state.results.map((result, i) =>
-      <StatsCard
+      <StatsCard key={i} name={`V${i + 1}`}
         results={result}
-        name={`V${i}`}
-        key={i}
         {...analyzeResults(result)}
       />
     );
