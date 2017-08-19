@@ -5,10 +5,12 @@ import cx from "classnames";
 import CodeMirror from "react-codemirror";
 
 import "codemirror/lib/codemirror.css";
+import "./codetabs.css";
 
-const CodeTabNav = ({ isActive, onClick, title }) =>
+const CodeTabNav = ({ isActive, onClick, title, isTabClosable, onCloseTab }) =>
   <NavItem>
     <NavLink className={ cx({ active: isActive }) } onClick={onClick}>
+      {isTabClosable && <span className="remove-tab-button" onClick={onCloseTab}>&times;</span>}
       {title}
     </NavLink>
   </NavItem>
@@ -18,11 +20,13 @@ const CodeTabPane = ({ id, onChange, code, options }) =>
     <CodeMirror {...{ options, onChange }} value={code} />
   </TabPane>
 
+
 export default ({
   activeTab,
   addNewTab,
   onChangeFactory,
   onToggleFactory,
+  onTabCloseFactory,
   options,
   tabs,
 }) =>
@@ -33,9 +37,11 @@ export default ({
           title={`Function ${id}`}
           isActive={activeTab === id}
           onClick={onToggleFactory(id)}
+          isTabClosable={tabs.length > 1}
+          onCloseTab={onTabCloseFactory(id)}
         />
       )}
-      <CodeTabNav title="+" onClick={addNewTab} />
+      <CodeTabNav title="+" onClick={addNewTab} tabIsClosable={false} />
     </Nav>
     <TabContent activeTab={activeTab}>
       {tabs.map(({ id, code }) =>
