@@ -53,7 +53,7 @@ export default class App extends Component {
 
   runCode = () => {
     this.setState({ isRunning: true }, async() => {
-      const funcs = this.state.tabs.map(({ code }) => code);;
+      const funcs = this.state.tabs.map(({ code }) => code);
       await loadFunctions(funcs);
 
       const results = funcs.map(

@@ -19,7 +19,12 @@ const CodeTabPane = ({ id, onChange, code, options }) =>
   </TabPane>
 
 export default ({
-  tabs, activeTab, addNewTab, onToggleFactory, onChangeFactory, options
+  activeTab,
+  addNewTab,
+  onChangeFactory,
+  onToggleFactory,
+  options,
+  tabs,
 }) =>
   <section id="code-area">
     <Nav tabs>

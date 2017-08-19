@@ -4,7 +4,7 @@ import { BarChart, Bar, ResponsiveContainer, ReferenceLine } from "recharts";
 
 import { formatTime } from "../lib";
 
-export default ({name, max, median, samples, outerFence, results}) =>
+export default ({ name, max, median, samples, outerFence, results }) =>
   <Card key={name}>
     <CardBlock>
       <CardTitle>{name}</CardTitle>
