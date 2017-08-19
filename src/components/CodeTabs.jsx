@@ -4,18 +4,26 @@ import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
 import cx from "classnames";
 import CodeMirror from "react-codemirror";
 
+import "codemirror/mode/jsx/jsx";
 import "codemirror/lib/codemirror.css";
+import "codemirror/theme/3024-night.css";
 
 const CodeTabNav = ({ isActive, onClick, title }) =>
   <NavItem>
-    <NavLink className={ cx({ active: isActive }) } onClick={onClick}>
+    <NavLink className={ cx({ active: isActive }) } style={{
+      background: isActive && "rgb(9, 3, 0)",
+      borderColor: isActive && "rgb(9, 3, 0)",
+      color: isActive ? "white" : "gray",
+      cursor: "pointer"
+    }}
+    onClick={onClick}>
       {title}
     </NavLink>
   </NavItem>
 
 const CodeTabPane = ({ id, onChange, code, options }) =>
   <TabPane tabId={id}>
-    <CodeMirror {...{ options, onChange }} value={code} />
+    <CodeMirror {...{ options, onChange }} value={code} autoFocus />
   </TabPane>
 
 export default ({
@@ -27,10 +35,10 @@ export default ({
   tabs,
 }) =>
   <section id="code-area">
-    <Nav tabs>
+    <Nav tabs style={{ marginLeft: 30, border: 0 }}>
       {tabs.map(({ id }) =>
         <CodeTabNav key={id}
-          title={`Function ${id}`}
+          title={`${tabs.length > 6 ? "F" : "Function"} ${id}`}
           isActive={activeTab === id}
           onClick={onToggleFactory(id)}
         />

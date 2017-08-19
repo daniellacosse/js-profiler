@@ -4,8 +4,10 @@ import { BarChart, Bar, ResponsiveContainer, ReferenceLine } from "recharts";
 
 import { formatTime } from "../lib";
 
+import "./StatsCard.css";
+
 export default ({ name, max, median, samples, outerFence, results }) =>
-  <Card key={name}>
+  <Card key={name} className="StatsCard">
     <CardBlock>
       <CardTitle>{name}</CardTitle>
 
@@ -25,13 +27,8 @@ export default ({ name, max, median, samples, outerFence, results }) =>
       </ResponsiveContainer>
 
       <CardText>
-        <b>Median Execution Time:</b> {formatTime(median)} <br />
-        <b>Max Execution Time:</b> {formatTime(max)} <br />
-        <b>Outliers:</b> {
-          results
-            .filter(num => num > outerFence.min && num < outerFence.max)
-            .length
-        }
+        Median: <b>{formatTime(median)}</b> <br />
+        Max: <b>{formatTime(max)}</b> <br />
       </CardText>
     </CardBlock>
   </Card>
