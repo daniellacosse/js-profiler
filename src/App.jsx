@@ -33,17 +33,18 @@ export default class App extends Component {
 
   addNewTab = () => {
     const { tabs } = this.state;
-
     const lastTab = tabs[tabs.length - 1];
-
     const newTabId = String(
       parseInt(lastTab.id, 10) + 1
     );
 
-    const newTabs = tabs.push({
-      id: newTabId,
-      code: ""
-    });
+    const newTabs = [
+      ...tabs,
+      {
+        id: newTabId,
+        code: ""
+      }
+    ]
 
     this.setState({
       tabs: newTabs,
@@ -71,7 +72,6 @@ export default class App extends Component {
 
   render() {
     const { isRunning, tabs, activeTab, options } = this.state;
-
     return (
       <main>
         <CodeTabs {...{ tabs, activeTab, options }}
