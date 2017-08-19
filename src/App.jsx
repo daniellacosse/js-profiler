@@ -19,10 +19,15 @@ export default class App extends Component {
   }
 
   onTabToggleFactory = (tabId) => {
-    return () =>
+    return () => {
       this.setState({
-        activeTab: (this.state.activeTab !== tabId) && tabId
+        activeTab: tabId
       });
+    }
+  }
+
+  onTabCloseFactory = (tabId) => {
+    return () => console.log(tabId);
   }
 
   onTableToggle = () => {
@@ -77,6 +82,7 @@ export default class App extends Component {
           addNewTab={this.addNewTab}
           onToggleFactory={this.onTabToggleFactory}
           onChangeFactory={this.onCodeChangeFactory}
+          onTabCloseFactory={this.onTabCloseFactory}
         />
 
         <button onClick={this.runCode} disabled={isRunning}>
