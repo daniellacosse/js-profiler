@@ -1,67 +1,60 @@
-import React, { Component } from 'react';
-import { Table, Collapse } from 'reactstrap';
+import React, { Component } from "react";
+import { Table, Collapse } from "reactstrap";
 
-import './App.css';
-import 'codemirror/lib/codemirror.css';
-import 'bootstrap/dist/css/bootstrap.css';
+import { loadFunctions, profileFunc, analyzeResults } from "./lib";
+import { StatsCard, CodeTabs, RawDataTable } from "./components";
 
-import { loadFunctions, profileFunc, analyzeResults } from './lib';
-import { StatsCard, CodeTabs } from './components';
+export default class App extends Component {
+  state = require("./App.defaultState")
 
-class App extends Component {
-  state = {
-    isRunning: false,
-    isTableOpen: false,
-    code: "// Paste JS function here",
-    options: {
-      lineNumbers: true,
-      mode: "javascript",
-      theme: "night"
-    },
-    activeTab: '1',
-    tabs: [{id: '1', code:''}, {id: '2', code:''}]
-  }
-
-  onCodeChangeFactory(tabId) {
+  onCodeChangeFactory = (tabId) => {
     return (code) => {
       const tabIndex = parseInt(tabId, 10) - 1;
       const { tabs } = this.state;
 
       tabs[tabIndex].code = code;
+
       this.setState({ tabs });
     }
   }
 
-  onTableToggle() {
+  onTabToggleFactory = (tabId) => {
+    return () =>
+      this.setState({
+        activeTab: (this.state.activeTab !== tabId) && tabId
+      });
+  }
+
+  onTableToggle = () => {
     this.setState({
       isTableOpen: !this.state.isTableOpen
     });
   }
 
-  onTabToggle(tab) {
-    if (this.state.activeTab !== tab)
-      this.setState({
-        activeTab: tab
-      });
-  }
-
-  addNewTab() {
+  addNewTab = () => {
     const { tabs } = this.state;
 
-    const lastTab = tabs[tabs.length - 1]
-    const newTabId = String(parseInt(lastTab.id, 10) + 1)
-    const newTabs = tabs.push({ id: newTabId, code: '' });
+    const lastTab = tabs[tabs.length - 1];
+
+    const newTabId = String(
+      parseInt(lastTab.id, 10) + 1
+    );
+
+    const newTabs = tabs.push({
+      id: newTabId,
+      code: ""
+    });
 
     this.setState({
       tabs: newTabs,
       activeTab: newTabId
-    })
+    });
   }
 
-  runCode() {
+  runCode = () => {
     this.setState({ isRunning: true }, async () => {
-      const funcs = [ this.state.code ];
-
+      const funcs = this.state.tabs.map(({ code }) => code);
+;
       await loadFunctions(funcs);
 
       const results = funcs.map(
@@ -77,74 +70,18 @@ class App extends Component {
     });
   }
 
-  renderResultCards() {
-    return this.state.results.map((result, i) =>
-      <StatsCard
-        results={result}
-        name={`V${i}`}
-        {...analyzeResults(result)}
-      />
-    )
-  }
-
-  renderResultRow(index) {
-    let rows = [];
-    let _countdown = this.state.results.length;
-
-    while(_countdown--) {
-      rows.push(this.state.results[_countdown][index]);
-    }
-
-    return (
-      <tr key={index}>
-        {rows.map((cell, i) => <td key={i}>{cell}ms</td>)}
-      </tr>
-    );
-  }
-
-  renderResults() {
-    const {results, isTableOpen} = this.state;
-
-    if (!this.state.results) {
-      return <section></section>;
-    }
-
-    return (
-      <section>
-        {this.renderResultCards()}
-
-        <button onClick={this.onToggleTable.bind(this)}>
-          Toggle Table
-        </button>
-
-        <Collapse isOpen={isTableOpen}>
-          <Table>
-            <thead>
-              <tr>
-                {results.map((row, i) => <th key={i}>{i}</th>)}
-              </tr>
-            </thead>
-            <tbody>
-              {results[0].map((cell, i) => this.renderResultRow(i))}
-            </tbody>
-          </Table>
-        </Collapse>
-      </section>
-    );
-  }
-
   render() {
-    const {isRunning, tabs, activeTab} = this.state;
+    const { isRunning, tabs, activeTab, options } = this.state;
 
     return (
       <main>
-        <CodeTabs {...{ tabs, activeTab }}
-          onToggle={this.onTabToggle.bind(this)}
-          onChange={this.onCodeChangeFactory.bind(this)}
-          addNewTab={this.addNewTab.bind(this)}
+        <CodeTabs {...{ tabs, activeTab, options }}
+          addNewTab={this.addNewTab}
+          onToggleFactory={this.onTabToggleFactory}
+          onChangeFactory={this.onCodeChangeFactory}
         />
 
-        <button onClick={this.runCode.bind(this)} disabled={isRunning}>
+        <button onClick={this.runCode} disabled={isRunning}>
           Run Code
         </button>
 
@@ -152,6 +89,32 @@ class App extends Component {
       </main>
     );
   }
-}
 
-export default App;
+  renderResults() {
+    const { results, isTableOpen } = this.state;
+
+    return results && (
+      <section>
+        {this.renderResultCards()}
+
+        <button onClick={this.onToggleTable}>
+          Toggle Table
+        </button>
+
+        <Collapse isOpen={isTableOpen}>
+          <RawDataTable data={results} />
+        </Collapse>
+      </section>
+    );
+  }
+
+  renderResultCards() {
+    return this.state.results.map((result, i) =>
+      <StatsCard
+        results={result}
+        name={`V${i}`}
+        {...analyzeResults(result)}
+      />
+    );
+  }
+}

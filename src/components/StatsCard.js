@@ -1,8 +1,8 @@
-import React from 'react';
-import { Card, CardText, CardTitle, CardBlock } from 'reactstrap';
-import { BarChart, Bar, ResponsiveContainer, ReferenceLine } from 'recharts';
+import React from "react";
+import { Card, CardText, CardTitle, CardBlock } from "reactstrap";
+import { BarChart, Bar, ResponsiveContainer, ReferenceLine } from "recharts";
 
-import { formatTime } from '../lib';
+import { formatTime } from "../lib";
 
 export default ({name, max, median, samples, outerFence, results}) =>
   <Card key={name}>
@@ -18,9 +18,9 @@ export default ({name, max, median, samples, outerFence, results}) =>
               .map(point => ({point}))
           }>
 
-          <Bar dataKey='point' fill='#108ee9' isAnimationActive={false}/>
+          <Bar dataKey="point" fill="#108ee9" isAnimationActive={false}/>
           <ReferenceLine
-            y={median} stroke='#da8c18' isAnimationActive={false} />
+            y={median} stroke="#da8c18" isAnimationActive={false} />
         </BarChart>
       </ResponsiveContainer>
 
