@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Collapse } from "reactstrap";
 
-import { loadFunctions, profileFunc, analyzeResults } from "./lib";
+import { transpose, loadFunctions, profileFunc, analyzeResults } from "./lib";
 import { StatsCard, CodeTabs, RawDataTable } from "./components";
 
 export default class App extends Component {
@@ -101,7 +101,7 @@ export default class App extends Component {
         </button>
 
         <Collapse isOpen={isTableOpen}>
-          <RawDataTable data={results} />
+          <RawDataTable data={transpose(results)} />
         </Collapse>
       </section>
     );
@@ -112,6 +112,7 @@ export default class App extends Component {
       <StatsCard
         results={result}
         name={`V${i}`}
+        key={i}
         {...analyzeResults(result)}
       />
     );

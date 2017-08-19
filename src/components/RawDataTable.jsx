@@ -50,8 +50,12 @@ class TableBody extends Component {
   static contextTypes = resultContext;
 
   render() {
-    return this.context.data.map(
-      (row, index) => row.map(this.props.children)
+    return (
+      <tbody>
+        {this.context.data.map(
+          (row, index) => row.map(this.props.children)
+        )}
+      </tbody>
     )
   }
 }
@@ -62,7 +66,6 @@ class TableRow extends Component {
   render() {
     const { index } = this.props;
     const cells = this.context.data[index];
-
     return (
       <tr key={index}>
         {cells.map((cell, j) => <td key={j}>{cell}ms</td>)}
