@@ -85,20 +85,23 @@ export default class App extends Component {
   }
 
   runCode = () => {
-    this.setState({ isRunning: true }, async() => {
+    this.setState({ isRunning: true }, async () => {
       const funcs = this.state.tabs.map(({ code }) => code);
       await loadFunctions(funcs);
 
-      const results = funcs.map(
-        async(_, index) => await profileFunc(window[`_func${index}`])
-      );
+      let _len = funcs.length
+      let results = new Array(funcs.length);
 
-      Promise
-        .all(results)
-        .then((unwrappedResults) => this.setState({
-          isRunning: false,
-          results: unwrappedResults
-        }));
+      while (_len--) {
+        const newResult = await profileFunc(window[`_func${_len}`]);
+
+        results[_len] = newResult;
+      }
+
+      return this.setState({
+        isRunning: false,
+        results
+      });
     });
   }
 
