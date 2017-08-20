@@ -24,6 +24,7 @@ export default class App extends Component {
 
   onTabToggleFactory = (tabId) => {
     return () => {
+
       this.setState({
         activeTab: tabId
       });

@@ -25,10 +25,30 @@ const CodeTabNav = ({ isActive, onClick, title, isTabClosable, onCloseTab }) =>
     </NavLink>
   </NavItem>
 
-const CodeTabPane = ({ id, onChange, code, options }) =>
-  <TabPane tabId={id}>
-    <CodeMirror {...{ options, onChange }} value={code} autoFocus />
-  </TabPane>
+// const CodeTabPane = ({ id, onChange, code, options }) =>
+class CodeTabPane extends React.Component {
+
+  componentDidUpdate (prevProps) {
+    if (this.props.isActiveTab && !prevProps.isActiveTab) {
+      console.log(this.refs)
+      console.log(this.refs.codemirror)
+      this.refs.codemirror.focus();
+    }
+  }
+
+  render() {
+    return (
+      <TabPane tabId={this.props.id}>
+        <CodeMirror 
+          options={this.props.options}
+          onChange={this.props.onChange}
+          value={this.props.code} 
+          autoFocus 
+          ref="codemirror"/>
+      </TabPane>
+    )
+  } 
+}
 
 
 export default ({
@@ -55,7 +75,7 @@ export default ({
     </Nav>
     <TabContent activeTab={activeTab}>
       {tabs.map(({ id, code }) =>
-        <CodeTabPane key={id} {...{ id, code, options }}  onChange={onChangeFactory(id)} />
+        <CodeTabPane key={id} {...{ id, code, options }}  onChange={onChangeFactory(id)} isActiveTab={(activeTab===id)} />
       )}
     </TabContent>
   </section>
