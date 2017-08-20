@@ -1,0 +1,10 @@
+.StatsCard {
+  width: 33%;
+  background-color: rgb(15, 15, 15) !important;
+  border: 3px solid rgb(20, 20, 20) !important;
+  font-family: HelveticaNeue, Helvetica, sans-serif;
+}
+
+.StatsCard h4 {
+  margin-top: 0;
+}

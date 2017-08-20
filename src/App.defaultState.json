@@ -3,8 +3,8 @@
   "isTableOpen": false,
   "options": {
     "lineNumbers": true,
-    "mode": "javascript",
-    "theme": "night"
+    "mode": "text/jsx",
+    "theme": "3024-night"
   },
   "activeTab": "1",
   "tabs": [

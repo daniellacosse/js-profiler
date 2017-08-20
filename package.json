@@ -7,8 +7,10 @@
   },
   "dependencies": {
     "bootstrap": "4.0.0-alpha.6",
-    "process.hrtime": "^1.0.3",
+    "bootswatch": "^3.3.7",
+    "codemirror": "^5.28.0",
     "install": "^0.10.1",
+    "process.hrtime": "^1.0.3",
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.0",
     "react-addons-transition-group": "^15.6.0",
