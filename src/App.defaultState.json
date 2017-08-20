@@ -6,10 +6,10 @@
     "mode": "text/jsx",
     "theme": "3024-night"
   },
-  "activeTab": "1",
+  "activeTab": 1,
   "tabs": [
     {
-      "id": "1",
+      "id": 1,
       "code": "() => {}"
     }
   ]
