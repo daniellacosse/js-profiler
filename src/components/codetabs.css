@@ -7,6 +7,6 @@
 
 .remove-tab-button:hover {
     cursor: pointer;
-    color: white;
-    background: lightgrey;
+    color: black;
+    background: darkgrey;
 }
