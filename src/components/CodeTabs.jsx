@@ -30,10 +30,12 @@ class CodeTabPane extends React.Component {
 
   componentDidUpdate (prevProps) {
     if (this.props.isActiveTab && !prevProps.isActiveTab) {
-      console.log(this.refs)
-      console.log(this.refs.codemirror)
       this.refs.codemirror.focus();
     }
+  }
+
+  componentDidMount() {
+    this.refs.codemirror.getCodeMirror().execCommand('selectAll');
   }
 
   render() {
