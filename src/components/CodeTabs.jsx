@@ -48,7 +48,7 @@ export default ({
   )
 }
 
-const CodeTab = ({ isActive, onSelect, title, isDisabled, onCloseTab }) =>
+const CodeTab = ({ isActive, onSelect, title, isDisabled, onClose }) =>
   <NavItem>
     <NavLink className={
         isActive
@@ -59,7 +59,7 @@ const CodeTab = ({ isActive, onSelect, title, isDisabled, onCloseTab }) =>
     >
       {
         !isDisabled && (
-          <span className="CodeTabsRemoveButton" onClick={onCloseTab}>
+          <span className="CodeTabsRemoveButton" onClick={onClose}>
             &times;
           </span>
         )
