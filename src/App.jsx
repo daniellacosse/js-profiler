@@ -10,21 +10,54 @@ export default class App extends Component {
   state = require("./App.defaultState.json")
 
   onCodeChangeFactory = (tabId) => {
+    let newTabs = this.state.tabs.slice();
     return (code) => {
-      const tabIndex = parseInt(tabId, 10) - 1;
-      const { tabs } = this.state;
+      newTabs.forEach(tab => {
+        if (tab.id === tabId) {
+          tab.code = code;
+        }
+      });
 
-      tabs[tabIndex].code = code;
-
-      this.setState({ tabs });
+      this.setState({ tabs: newTabs });
     }
   }
 
   onTabToggleFactory = (tabId) => {
-    return () =>
+    return () => {
       this.setState({
-        activeTab: (this.state.activeTab !== tabId) && tabId
+        activeTab: tabId
       });
+    }
+  }
+
+  onTabCloseFactory = (tabId) => {
+    return (event) => {
+      event.stopPropagation();
+      let newTabs = this.state.tabs.filter(tab => tab.id !== tabId);
+      let newActiveTabId = null;
+
+      // select the active tab
+      if (this.state.activeTab === tabId) {
+        // active tab closed. search for an adjecent tab to make active
+        this.state.tabs.forEach((tab, index) => {
+          if (tab.id === tabId) {
+            if (index === 0) {
+              newActiveTabId = this.state.tabs[1].id;
+            } else {
+              newActiveTabId = this.state.tabs[index - 1].id;
+            }
+          }
+        });
+      } else {
+        // search for the location of the current active tab in the newTabs list
+        newActiveTabId = this.state.activeTab;
+      }
+
+      this.setState({
+        tabs: newTabs,
+        activeTab: newActiveTabId
+      });
+    };
   }
 
   onTableToggle = () => {
@@ -36,9 +69,7 @@ export default class App extends Component {
   addNewTab = () => {
     const { tabs } = this.state;
     const lastTab = tabs[tabs.length - 1];
-    const newTabId = String(
-      parseInt(lastTab.id, 10) + 1
-    );
+    const newTabId = parseInt(lastTab.id, 10) + 1;
 
     const newTabs = [ ...tabs,
       {
@@ -80,6 +111,7 @@ export default class App extends Component {
             addNewTab={this.addNewTab}
             onToggleFactory={this.onTabToggleFactory}
             onChangeFactory={this.onCodeChangeFactory}
+            onTabCloseFactory={this.onTabCloseFactory}
             />
 
           <Button className="RunButton" color="primary" onClick={this.runCode} disabled={isRunning}>
