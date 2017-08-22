@@ -34,7 +34,7 @@ export default ({
             onClose={onTabCloseFactory(id)}
           />
         )}
-        <CodeTab title="+" onClick={addNewTab} isDisabled />
+        <CodeTab title="+" onSelect={addNewTab} isDisabled />
       </Nav>
       <TabContent activeTab={activeTab}>
         {tabs.map(({ id, code }) =>
