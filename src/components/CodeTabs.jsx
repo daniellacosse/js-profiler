@@ -1,57 +1,12 @@
-import React from "react";
+import React, { Component } from "react";
 import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
 
-import cx from "classnames";
 import CodeMirror from "react-codemirror";
-
 import "codemirror/mode/jsx/jsx";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/3024-night.css";
-import "./codetabs.css";
 
-const CodeTabNav = ({ isActive, onClick, title, isTabClosable, onCloseTab }) =>
-  <NavItem>
-    <NavLink 
-      className={ cx({ active: isActive }) } 
-      onClick={onClick}
-      style={{
-        background: isActive && "rgb(9, 3, 0)",
-        borderColor: isActive && "rgb(9, 3, 0)",
-        color: isActive ? "white" : "gray",
-        cursor: "pointer"
-    }}>
-      {isTabClosable && <span className="remove-tab-button" onClick={onCloseTab}>&times;</span>}
-      {title}
-    </NavLink>
-  </NavItem>
-
-// const CodeTabPane = ({ id, onChange, code, options }) =>
-class CodeTabPane extends React.Component {
-
-  componentDidUpdate (prevProps) {
-    if (this.props.isActiveTab && !prevProps.isActiveTab) {
-      this.refs.codemirror.focus();
-    }
-  }
-
-  componentDidMount() {
-    this.refs.codemirror.getCodeMirror().execCommand('selectAll');
-  }
-
-  render() {
-    return (
-      <TabPane tabId={this.props.id}>
-        <CodeMirror 
-          options={this.props.options}
-          onChange={this.props.onChange}
-          value={this.props.code} 
-          autoFocus 
-          ref="codemirror"/>
-      </TabPane>
-    )
-  } 
-}
-
+import "./CodeTabs.css";
 
 export default ({
   activeTab,
@@ -61,23 +16,87 @@ export default ({
   onTabCloseFactory,
   options,
   tabs,
-}) =>
-  <section id="code-area">
-    <Nav tabs style={{ marginLeft: 30, border: 0 }}>
-      {tabs.map(({ id }) =>
-        <CodeTabNav key={id}
-          title={`${tabs.length > 6 ? "F" : "Function"} ${id}`}
-          isActive={activeTab === id}
-          onClick={onToggleFactory(id)}
-          isTabClosable={tabs.length > 1}
-          onCloseTab={onTabCloseFactory(id)}
-        />
-      )}
-      <CodeTabNav title="+" onClick={addNewTab} tabIsClosable={false} />
-    </Nav>
-    <TabContent activeTab={activeTab}>
-      {tabs.map(({ id, code }) =>
-        <CodeTabPane key={id} {...{ id, code, options }}  onChange={onChangeFactory(id)} isActiveTab={(activeTab===id)} />
-      )}
-    </TabContent>
-  </section>
+}) => {
+  const titlePrefix =
+    tabs.length > 6
+      ? "F"
+      : "Function ";
+
+  return (
+    <section>
+      <Nav tabs className="CodeTabs">
+        {tabs.map(({ id }) =>
+          <CodeTab key={id}
+            title={titlePrefix + id}
+            isActive={activeTab === id}
+            isDisabled={tabs.length === 1}
+            onSelect={onToggleFactory(id)}
+            onClose={onTabCloseFactory(id)}
+          />
+        )}
+        <CodeTab title="+" onClick={addNewTab} isDisabled />
+      </Nav>
+      <TabContent activeTab={activeTab}>
+        {tabs.map(({ id, code }) =>
+          <CodePane {...{ id, code, options, key: id }}
+            isActive={activeTab === id}
+            onChange={onChangeFactory(id)}
+          />
+        )}
+      </TabContent>
+    </section>
+  )
+}
+
+const CodeTab = ({ isActive, onSelect, title, isDisabled, onCloseTab }) =>
+  <NavItem>
+    <NavLink className={
+        isActive
+          ? "CodeTab-active"
+          : "CodeTab"
+       }
+      onClick={onSelect}
+    >
+      {
+        !isDisabled && (
+          <span className="CodeTabsRemoveButton" onClick={onCloseTab}>
+            &times;
+          </span>
+        )
+      }
+
+      {title}
+    </NavLink>
+  </NavItem>
+
+  class CodePane extends Component {
+    get editor() {
+      return this.refs && this.refs.editor;
+    }
+
+    componentDidUpdate(prevProps) {
+      if (this.props.isActiveTab && !prevProps.isActiveTab) {
+        this.editor.focus();
+      }
+    }
+
+    componentDidMount() {
+      this.editor.getCodeMirror()
+        .execCommand("selectAll");
+    }
+
+    render() {
+      const { options, onChange, code } = this.props;
+
+      return (
+        <TabPane tabId={this.props.id}>
+          <CodeMirror ref="editor" autoFocus {...{
+              options,
+              onChange,
+              value: code
+            }}
+          />
+        </TabPane>
+      )
+    }
+  }

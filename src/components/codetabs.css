@@ -1,12 +1,33 @@
-.remove-tab-button {
-    margin-right: 5px;
-    border-radius: 20%;
-    padding: 2px 5px;
-    margin-right: 20px;
+.CodeTabs {
+  margin-left: 30px;
+  border: 0px !important;
 }
 
-.remove-tab-button:hover {
-    cursor: pointer;
-    color: black;
-    background: darkgrey;
+.CodeTab {
+  color: gray !important;
+}
+
+.CodeTab-active,
+.CodeTab-active:hover {
+  background: rgb(9, 3, 0) !important;
+  border-color: rgb(9, 3, 0) !important;
+  color: white !important;
+}
+
+.CodeTab,
+.CodeTab-active {
+  cursor: pointer;
+}
+
+.CodeTabsRemoveButton {
+  margin-right: 5px;
+  border-radius: 20%;
+  padding: 2px 5px;
+  margin-right: 20px;
+}
+
+.CodeTabsRemoveButton:hover {
+  cursor: pointer;
+  color: black;
+  background: darkgrey;
 }

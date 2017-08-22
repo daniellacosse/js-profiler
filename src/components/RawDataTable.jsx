@@ -34,8 +34,6 @@ class TableHeader extends Component {
   static contextTypes = resultContext;
 
   render() {
-    const length = this.context.data[0].length;
-
     return (
       <thead>
         <tr>
@@ -68,7 +66,7 @@ class TableRow extends Component {
   render() {
     const { index } = this.props;
     const cells = this.context.data[index];
-    const length = cells.length;
+
     return (
       <tr key={index}>
         {cells.map((cell, j) => <td key={j}>{cell.toFixed(3)}ms</td>)}
