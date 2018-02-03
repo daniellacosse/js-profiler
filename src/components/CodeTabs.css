@@ -1,0 +1,38 @@
+.CodeTabs {
+  margin-left: 30px;
+  border: 0px !important;
+}
+
+.CodeTab {
+  color: gray !important;
+}
+
+.CodeTab-active,
+.CodeTab-active:hover {
+  background: rgb(9, 3, 0) !important;
+  border-color: rgb(9, 3, 0) !important;
+  color: white !important;
+}
+
+.CodeTab,
+.CodeTab-active {
+  user-select: none !important;
+}
+
+.CodeTab,
+.CodeTabsRemoveButton,
+.CodeTabsRemoveButton:hover {
+  cursor: pointer;
+}
+
+.CodeTabsRemoveButton {
+  position: relative;
+  right: 6px;
+  color: gray;
+  cursor: pointer;
+  font-size: 17px;
+}
+
+.CodeTabsRemoveButton:hover {
+  color: white;
+}

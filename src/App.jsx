@@ -24,7 +24,6 @@ export default class App extends Component {
 
   onTabToggleFactory = (tabId) => {
     return () => {
-
       this.setState({
         activeTab: tabId
       });
@@ -34,24 +33,25 @@ export default class App extends Component {
   onTabCloseFactory = (tabId) => {
     return (event) => {
       event.stopPropagation();
-      let newTabs = this.state.tabs.filter(tab => tab.id !== tabId);
+
+      const { tabs, activeTab } = this.state;
+
+      let newTabs = tabs.filter(tab => tab.id !== tabId);
       let newActiveTabId = null;
 
       // select the active tab
-      if (this.state.activeTab === tabId) {
+      if (activeTab === tabId) {
         // active tab closed. search for an adjecent tab to make active
-        this.state.tabs.forEach((tab, index) => {
+        tabs.forEach((tab, index) => {
           if (tab.id === tabId) {
-            if (index === 0) {
-              newActiveTabId = this.state.tabs[1].id;
-            } else {
-              newActiveTabId = this.state.tabs[index - 1].id;
-            }
+            newActiveTabId = (index === 0)
+              ? tabs[1].id
+              : tabs[index - 1].id;
           }
         });
       } else {
         // search for the location of the current active tab in the newTabs list
-        newActiveTabId = this.state.activeTab;
+        newActiveTabId = activeTab;
       }
 
       this.setState({
@@ -77,7 +77,7 @@ export default class App extends Component {
         id: newTabId,
         code: "() => {}"
       }
-    ]
+    ];
 
     this.setState({
       tabs: newTabs,
@@ -116,9 +116,13 @@ export default class App extends Component {
             onToggleFactory={this.onTabToggleFactory}
             onChangeFactory={this.onCodeChangeFactory}
             onTabCloseFactory={this.onTabCloseFactory}
-            />
+           />
 
-          <Button className="RunButton" color="primary" onClick={this.runCode} disabled={isRunning}>
+          <Button className="RunButton"
+            color="primary"
+            onClick={this.runCode}
+            disabled={isRunning}
+          >
             Run
           </Button>
         </section>
@@ -149,8 +153,9 @@ export default class App extends Component {
   renderResultCards() {
     return (
       <section  style={{ display: "flex", flexWrap: "wrap" }}>
-        {this.state.results.map((result, i) =>
-          <StatsCard key={i} name={`Function ${i + 1}`}
+        {this.state.results.map((result, index) =>
+          <StatsCard key={index}
+            name={`Function ${index + 1}`}
             results={result}
             {...analyzeResults(result)}
           />
